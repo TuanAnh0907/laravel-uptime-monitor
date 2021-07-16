@@ -13,9 +13,15 @@ class Notifiable
      */
     protected $emails;
 
-    public function __construct($emails = [])
+    /**
+     * @var mixed|string
+     */
+    protected $slack_channel;
+
+    public function __construct($emails = [], $slack_channel = "")
     {
-        $this->emails = $emails;
+        $this->emails        = $emails;
+        $this->slack_channel = $slack_channel;
     }
 
     /**
@@ -24,8 +30,7 @@ class Notifiable
      */
     public function routeNotificationForMail()
     {
-        dd(array_unique(array_merge(config('uptime-monitor.notifications.mail.to', []), $this->emails)));
-        return array_unique(array_merge(config('uptime-monitor.notifications.mail.to', []), $this->emails));
+        return $this->emails ?: config('uptime-monitor.notifications.mail.to', []);
     }
 
     /**
@@ -33,7 +38,7 @@ class Notifiable
      */
     public function routeNotificationForSlack()
     {
-        return config('uptime-monitor.notifications.slack.webhook_url');
+        return $this->slack_channel ?: config('uptime-monitor.notifications.slack.webhook_url');
     }
 
     public function getKey(): string

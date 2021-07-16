@@ -26,23 +26,23 @@ class EventHandler
         $events->listen($this->allEventClasses(), function ($event) {
             $notification = $this->determineNotification($event);
 
-            if (! $notification) {
+            if (!$notification) {
                 return;
             }
 
             if ($notification->isStillRelevant()) {
-                $notifiable = $this->determineNotifiable($event->getEmails());
+                $notifiable = $this->determineNotifiable($event->getEmails(), $event->getSlackChannel());
 
                 $notifiable->notify($notification);
             }
         });
     }
 
-    protected function determineNotifiable($emails = [])
+    protected function determineNotifiable($emails = [], $slack_channel = "")
     {
         $notifiableClass = $this->config->get('uptime-monitor.notifications.notifiable');
 
-        return app($notifiableClass,["emails" => $emails]);
+        return app($notifiableClass, ["emails" => $emails, "slack_channel" => $slack_channel]);
     }
 
     protected function determineNotification($event)

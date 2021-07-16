@@ -38,7 +38,9 @@ class CreateMonitorsTable extends Migration
             $table->string('certificate_issuer')->nullable();
             $table->string('certificate_check_failure_reason')->default('');
 
+            //Notification
             $table->string("slack_user_ids")->nullable()->comment("slack user ids will be mention in messages");
+            $table->string("slack_channel")->nullable()->comment("slack channel will be received");
             $table->string("user_emails")->nullable()->comment("email will be sent notifications");
 
             $table->timestamps();

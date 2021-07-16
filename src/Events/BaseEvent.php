@@ -39,11 +39,18 @@ class BaseEvent implements ShouldQueue
         return [];
     }
 
+    /**
+     * @return array|false|string[]
+     */
     public function getSlackUserIds(){
         $user_ids = $this->monitor->slack_user_ids ?? "";
         if ($user_ids){
             return explode(",",$user_ids);
         }
         return  [];
+    }
+
+    public function getSlackChannel(){
+        return $this->monitor->slack_channel ?? '';
     }
 }
