@@ -14,7 +14,7 @@ You'll find extensive documentation on [https://docs.spatie.be/laravel-uptime-mo
 ## - V1.2:
     - Add ping method which you can ping to your server
 
-## - V1.3:
+## - V1.3 (coming soon):
     - Add advance conditions when you want to compare return values with expected values
     
 Enjoy!
