@@ -17,10 +17,10 @@
     ],
     "require": {
         "php": "^7.4|^8.0",
+        "acamposm/ping": "^2.1",
         "graham-campbell/guzzle-factory": "^4.0",
         "guzzlehttp/guzzle": "^7.0",
         "laravel/framework": "^8.7",
-
         "laravel/slack-notification-channel": "^2.0",
         "spatie/ssl-certificate": "^1.5.0",
         "spatie/url": "^1.0.1"
