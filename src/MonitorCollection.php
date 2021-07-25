@@ -52,7 +52,7 @@ class MonitorCollection extends Collection
             ConsoleOutput::info("Checking {$monitor->url}");
 
             if ($monitor->uptime_check_method === "ping") {
-                $command = (new PingCommandBuilder($monitor->url))->count(10);
+                $command = (new PingCommandBuilder($monitor->url))->count(config('uptime-monitor.uptime_check.ping_count', 1));
                 try {
                     $ping           = (new Ping($command))->run();
                     $guzzle_options = config("uptime-monitor.uptime_check.guzzle_options", []);

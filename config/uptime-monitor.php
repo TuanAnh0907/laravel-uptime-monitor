@@ -8,13 +8,13 @@ return [
      */
     'notifications' => [
 
-        'notifications' => [
-            \Spatie\UptimeMonitor\Notifications\Notifications\UptimeCheckFailed::class => ['slack'],
+        'notifications'                                         => [
+            \Spatie\UptimeMonitor\Notifications\Notifications\UptimeCheckFailed::class    => ['slack'],
             \Spatie\UptimeMonitor\Notifications\Notifications\UptimeCheckRecovered::class => ['slack'],
             \Spatie\UptimeMonitor\Notifications\Notifications\UptimeCheckSucceeded::class => [],
 
-            \Spatie\UptimeMonitor\Notifications\Notifications\CertificateCheckFailed::class => ['slack'],
-            \Spatie\UptimeMonitor\Notifications\Notifications\CertificateExpiresSoon::class => ['slack'],
+            \Spatie\UptimeMonitor\Notifications\Notifications\CertificateCheckFailed::class    => ['slack'],
+            \Spatie\UptimeMonitor\Notifications\Notifications\CertificateExpiresSoon::class    => ['slack'],
             \Spatie\UptimeMonitor\Notifications\Notifications\CertificateCheckSucceeded::class => [],
         ],
 
@@ -22,7 +22,7 @@ return [
          * The location from where you are running this Laravel application. This location will be
          * mentioned in all notifications that will be sent.
          */
-        'location' => '',
+        'location'                                              => '',
 
         /*
          * To keep reminding you that a site is down, notifications
@@ -34,7 +34,7 @@ return [
             'to' => ['your@email.com'],
         ],
 
-        'slack' => [
+        'slack'       => [
             'webhook_url' => env('UPTIME_MONITOR_SLACK_WEBHOOK_URL'),
         ],
 
@@ -42,7 +42,7 @@ return [
          * Here you can specify the notifiable to which the notifications should be sent. The default
          * notifiable will use the variables specified in this config file.
          */
-        'notifiable' => \Spatie\UptimeMonitor\Notifications\Notifiable::class,
+        'notifiable'  => \Spatie\UptimeMonitor\Notifications\Notifiable::class,
 
         /*
          * The date format used in notifications.
@@ -58,7 +58,7 @@ return [
          *
          * You can use any implementation of Spatie\UptimeMonitor\Helpers\UptimeResponseCheckers\UptimeResponseChecker here.
          */
-        'response_checker' => Spatie\UptimeMonitor\Helpers\UptimeResponseCheckers\LookForStringChecker::class,
+        'response_checker'                                     => Spatie\UptimeMonitor\Helpers\UptimeResponseCheckers\LookForStringChecker::class,
 
         /*
          * An uptime check will be performed if the last check was performed more than the
@@ -68,33 +68,33 @@ return [
          * When an uptime check fails we'll check the uptime for that monitor every time `monitor:check-uptime`
          * runs regardless of this setting.
          */
-        'run_interval_in_minutes' => 5,
+        'run_interval_in_minutes'                              => 5,
 
         /*
          * To speed up the uptime checking process the package can perform the uptime check of several
          * monitors concurrently. Set this to a lower value if you're getting weird errors
          * running the uptime check.
          */
-        'concurrent_checks' => 10,
+        'concurrent_checks'                                    => 10,
 
         /*
          * The uptime check for a monitor will fail if the url does not respond after the
          * given number of seconds.
          */
-        'timeout_per_site' => 30,
+        'timeout_per_site'                                     => 30,
 
         /*
          * Because networks can be a bit unreliable the package can make three attempts
          * to connect to a server in one uptime check. You can specify the time in
          * milliseconds between each attempt.
          */
-        'retry_connection_after_milliseconds' => 100,
+        'retry_connection_after_milliseconds'                  => 100,
 
         /*
          * If you want to change the default Guzzle client behaviour, you can do so by
          * passing custom options that will be used when making requests.
          */
-        'guzzle_options' => [
+        'guzzle_options'                                       => [
             // 'allow_redirects' => false,
         ],
 
@@ -107,12 +107,17 @@ return [
         /*
          * When reaching out to sites this user agent will be used.
          */
-        'user_agent' => 'spatie/laravel-uptime-monitor uptime checker',
+        'user_agent'                                           => 'spatie/laravel-uptime-monitor uptime checker',
 
         /*
          * When reaching out to the sites these headers will be added.
          */
-        'additional_headers' => [],
+        'additional_headers'                                   => [],
+
+        /**
+         * ping times
+         */
+        'ping_count'                                           => 1
     ],
 
     'certificate_check' => [
@@ -130,5 +135,5 @@ return [
      * own model here. The only requirement is that it should extend
      * `Spatie\UptimeMonitor\Models\Monitor`.
      */
-    'monitor_model' => Spatie\UptimeMonitor\Models\Monitor::class,
+    'monitor_model'     => Spatie\UptimeMonitor\Models\Monitor::class,
 ];
