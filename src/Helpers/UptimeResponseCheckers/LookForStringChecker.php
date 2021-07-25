@@ -2,7 +2,6 @@
 
 namespace Spatie\UptimeMonitor\Helpers\UptimeResponseCheckers;
 
-use Illuminate\Support\Str;
 use Psr\Http\Message\ResponseInterface;
 use Spatie\UptimeMonitor\Models\Monitor;
 
@@ -14,7 +13,7 @@ class LookForStringChecker implements UptimeResponseChecker
             return true;
         }
 
-        return Str::contains((string) $response->getBody(), $monitor->look_for_string);
+        return strpos($response->getBody()->getContents(), $monitor->look_for_string) !== false;
     }
 
     public function getFailureReason(ResponseInterface $response, Monitor $monitor): string
