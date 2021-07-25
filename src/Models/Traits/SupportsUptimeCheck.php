@@ -31,7 +31,6 @@ trait SupportsUptimeCheck
 
     public function shouldCheckUptime(): bool
     {
-        return true;
         if (! $this->uptime_check_enabled) {
             return false;
         }
