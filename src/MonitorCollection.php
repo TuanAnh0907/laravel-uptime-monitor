@@ -21,7 +21,12 @@ class MonitorCollection extends Collection
     public function checkUptime(): void
     {
         $this->resetItemKeys();
+        $this->request();
+        $this->ping();
+    }
 
+    protected function request(): void
+    {
         (new EachPromise($this->getPromises(), [
             'concurrency' => config('uptime-monitor.uptime_check.concurrent_checks'),
             'fulfilled'   => function (ResponseInterface $response, $index) {
@@ -41,16 +46,10 @@ class MonitorCollection extends Collection
         ]))->promise()->wait();
     }
 
-    protected function getPromises(): Generator
+    protected function ping(): void
     {
-        $client = GuzzleFactory::make(
-            config('uptime-monitor.uptime_check.guzzle_options', []),
-            config('uptime-monitor.uptime-check.retry_connection_after_milliseconds', 100)
-        );
-
         foreach ($this->items as $monitor) {
             ConsoleOutput::info("Checking {$monitor->url}");
-
             if ($monitor->uptime_check_method === "ping") {
                 $command = (new PingCommandBuilder($monitor->url))->count(config('uptime-monitor.uptime_check.ping_count', 1));
                 try {
@@ -82,8 +81,20 @@ class MonitorCollection extends Collection
                     ConsoleOutput::error("Could not reach {$monitor->url} error " . $exception->getMessage());
                     $monitor->uptimeRequestFailed($exception->getMessage());
                 }
-                continue;
-            } else {
+            }
+        }
+    }
+
+    protected function getPromises(): Generator
+    {
+        $client = GuzzleFactory::make(
+            config('uptime-monitor.uptime_check.guzzle_options', []),
+            config('uptime-monitor.uptime-check.retry_connection_after_milliseconds', 100)
+        );
+
+        foreach ($this->items as $monitor) {
+            ConsoleOutput::info("Checking {$monitor->url}");
+            if ($monitor->uptime_check_method != "ping") {
                 $promise = $client->requestAsync(
                     $monitor->uptime_check_method,
                     $monitor->url,
@@ -93,8 +104,8 @@ class MonitorCollection extends Collection
                         'body'            => $monitor->uptime_check_payload,
                     ])
                 );
+                yield $promise;
             }
-            yield $promise;
         }
     }
 
