@@ -23,7 +23,8 @@
         "laravel/framework": "^8.7",
         "laravel/slack-notification-channel": "^2.0",
         "spatie/ssl-certificate": "^1.5.0",
-        "spatie/url": "^1.0.1"
+        "spatie/url": "^1.0.1",
+      "ext-json": "*"
     },
     "require-dev": {
         "laravel/legacy-factories": "^1.1",

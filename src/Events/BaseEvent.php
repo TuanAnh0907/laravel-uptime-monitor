@@ -32,22 +32,14 @@ class BaseEvent implements ShouldQueue
      * @return array|false|string[]
      */
     public function getEmails(){
-        $emails = $this->monitor->user_emails ?? "";
-        if ($emails){
-            return explode(",",$emails);
-        }
-        return [];
+        return $this->monitor->user_emails ?? [];
     }
 
     /**
      * @return array|false|string[]
      */
     public function getSlackUserIds(){
-        $user_ids = $this->monitor->slack_user_ids ?? "";
-        if ($user_ids){
-            return explode(",",$user_ids);
-        }
-        return  [];
+        return $this->monitor->slack_user_ids ?? [];
     }
 
     public function getSlackChannel(){

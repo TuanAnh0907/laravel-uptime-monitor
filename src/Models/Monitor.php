@@ -29,8 +29,10 @@ class Monitor extends Model
     ];
 
     protected $casts = [
-        'uptime_check_enabled' => 'boolean',
+        'uptime_check_enabled'      => 'boolean',
         'certificate_check_enabled' => 'boolean',
+        'slack_user_ids'            => 'array',
+        'user_emails'               => 'array',
     ];
 
     public function getUptimeCheckAdditionalHeadersAttribute($additionalHeaders): array
@@ -54,7 +56,7 @@ class Monitor extends Model
 
     public function getUrlAttribute(): ?Url
     {
-        if (! isset($this->attributes['url'])) {
+        if (!isset($this->attributes['url'])) {
             return null;
         }
 
@@ -63,7 +65,7 @@ class Monitor extends Model
 
     public function getRawUrlAttribute(): string
     {
-        return (string) $this->url;
+        return (string)$this->url;
     }
 
     public static function booted()
@@ -103,7 +105,7 @@ class Monitor extends Model
 
     public function disable(): self
     {
-        $this->uptime_check_enabled = false;
+        $this->uptime_check_enabled      = false;
         $this->certificate_check_enabled = false;
 
         $this->save();
@@ -119,6 +121,6 @@ class Monitor extends Model
             $query->where('id', '<>', $monitor->id);
         }
 
-        return (bool) $query->first();
+        return (bool)$query->first();
     }
 }
