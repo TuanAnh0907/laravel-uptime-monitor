@@ -101,7 +101,7 @@ class MonitorCollection extends Collection
                 array_filter(array_merge([
                     'connect_timeout' => config('uptime-monitor.uptime_check.timeout_per_site'),
                     'headers'         => $this->promiseHeaders($monitor),
-                ], $monitor->uptime_check_payload ?? []))
+                ], json_decode($monitor->uptime_check_payload, true) ?? []))
             );
 
             yield $promise;
