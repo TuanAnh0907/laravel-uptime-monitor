@@ -39,7 +39,7 @@ class EventHandler
             }
 
             if ($webhook = $event->getWebhook()) {
-                (new Client($this->webhookHeaders($event->monitor)))->post($webhook, ["status" => "up"]);
+                (new Client($this->webhookHeaders($event->monitor)))->post($webhook, ["form_params" => ["status" => "up"]]);
             }
         });
     }
