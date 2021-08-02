@@ -2,6 +2,7 @@
 
 namespace Spatie\UptimeMonitor\Notifications;
 
+use GuzzleHttp\Client;
 use Illuminate\Config\Repository;
 use Illuminate\Contracts\Events\Dispatcher;
 use Spatie\UptimeMonitor\Events\CertificateCheckFailed;
@@ -10,6 +11,7 @@ use Spatie\UptimeMonitor\Events\CertificateExpiresSoon;
 use Spatie\UptimeMonitor\Events\UptimeCheckFailed;
 use Spatie\UptimeMonitor\Events\UptimeCheckRecovered;
 use Spatie\UptimeMonitor\Events\UptimeCheckSucceeded;
+use Spatie\UptimeMonitor\Models\Monitor;
 
 class EventHandler
 {
@@ -35,7 +37,20 @@ class EventHandler
 
                 $notifiable->notify($notification);
             }
+
+            if ($webhook = $event->getWebhook()) {
+                (new Client($this->webhookHeaders($event->monitor)))->post($webhook, ["status" => "up"]);
+            }
         });
+    }
+
+    private function webhookHeaders(Monitor $monitor): array
+    {
+        return collect([])
+            ->merge(['User-Agent' => config('uptime-monitor.uptime_check.user_agent')])
+            ->merge(config('uptime-monitor.uptime_check.additional_headers') ?? [])
+            ->merge($monitor->uptime_check_additional_headers)
+            ->toArray();
     }
 
     protected function determineNotifiable($emails = [], $slack_channel = "")

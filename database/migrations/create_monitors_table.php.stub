@@ -41,6 +41,7 @@ class CreateMonitorsTable extends Migration
             //Notification
             $table->json("slack_user_ids")->nullable()->comment("slack user ids will be mention in messages");
             $table->string("slack_channel")->nullable()->comment("slack channel will be received");
+            $table->string("webhook")->nullable()->comment("a request will be sent to webhook");
             $table->json("user_emails")->nullable()->comment("email will be sent notifications");
 
             $table->timestamps();

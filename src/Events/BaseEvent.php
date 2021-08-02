@@ -9,7 +9,7 @@
 
 namespace Spatie\UptimeMonitor\Events;
 
-use \Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Spatie\UptimeMonitor\Models\Monitor;
 
 class BaseEvent implements ShouldQueue
@@ -31,18 +31,29 @@ class BaseEvent implements ShouldQueue
     /**
      * @return array|false|string[]
      */
-    public function getEmails(){
+    public function getEmails()
+    {
         return $this->monitor->user_emails ?? [];
+    }
+
+    /**
+     * @return string
+     */
+    public function getWebhook(): string
+    {
+        return $this->monitor->webhook ?? "";
     }
 
     /**
      * @return array|false|string[]
      */
-    public function getSlackUserIds(){
+    public function getSlackUserIds()
+    {
         return $this->monitor->slack_user_ids ?? [];
     }
 
-    public function getSlackChannel(){
+    public function getSlackChannel()
+    {
         return $this->monitor->slack_channel ?? '';
     }
 }
