@@ -11,8 +11,6 @@ You'll find extensive documentation on [https://docs.spatie.be/laravel-uptime-mo
     - Mention users on slack messages
     - Send announcements for users who subscribe channel
     
-## - V1.2 (latest):
+## - V1.2.x:
     - Add ping method which you can ping to your server
-
-## - V1.3 (coming soon):
-    - Add advance conditions when you want to compare return values with expected values
+    - Add webhook
