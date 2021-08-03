@@ -39,14 +39,15 @@ class EventHandler
                 $notifiable->notify($notification);
             }
 
-            if ($webhook = $event->getWebhook()) {
-                (new Client($this->webhookHeaders($monitor = $event->monitor)))->post($webhook, [
+            if (($monitor = $event->getMonitor())
+                && $monitor->uptime_check_enabled
+                && $webhook = $monitor->webhook) {
+                (new Client($this->webhookHeaders($monitor)))->post($webhook, [
                     "form_params" => [
                         "monitor" => Arr::only($monitor->toArray(), [
                             "url",
                             "uptime_status",
-                            "uptime_last_check_date",
-                            "certificate_status"
+                            "uptime_last_check_date"
                         ])
                     ]
                 ]);
