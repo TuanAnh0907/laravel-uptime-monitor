@@ -5,6 +5,7 @@ namespace Spatie\UptimeMonitor\Notifications;
 use GuzzleHttp\Client;
 use Illuminate\Config\Repository;
 use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Support\Arr;
 use Spatie\UptimeMonitor\Events\CertificateCheckFailed;
 use Spatie\UptimeMonitor\Events\CertificateCheckSucceeded;
 use Spatie\UptimeMonitor\Events\CertificateExpiresSoon;
@@ -38,8 +39,18 @@ class EventHandler
                 $notifiable->notify($notification);
             }
 
-            if ($webhook = $event->getWebhook()) {
-                (new Client($this->webhookHeaders($event->monitor)))->post($webhook, ["form_params" => ["status" => "up"]]);
+            if (($monitor = $event->getMonitor())
+                && $monitor->uptime_check_enabled
+                && $webhook = $monitor->webhook) {
+                (new Client($this->webhookHeaders($monitor)))->post($webhook, [
+                    "form_params" => [
+                        "monitor" => Arr::only($monitor->toArray(), [
+                            "url",
+                            "uptime_status",
+                            "uptime_last_check_date"
+                        ])
+                    ]
+                ]);
             }
         });
     }
