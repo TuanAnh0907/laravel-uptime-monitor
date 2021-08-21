@@ -95,16 +95,18 @@ class MonitorCollection extends Collection
         foreach ($this->items as $monitor) {
             ConsoleOutput::info("Checking {$monitor->url}");
 
-            $promise = $client->requestAsync(
-                $monitor->uptime_check_method,
-                $monitor->url,
-                array_filter(array_merge([
-                    'connect_timeout' => config('uptime-monitor.uptime_check.timeout_per_site'),
-                    'headers'         => $this->promiseHeaders($monitor),
-                ], json_decode($monitor->uptime_check_payload, true) ?? []))
-            );
+            if ($monitor->uptime_check_method !== "ping") {
+                $promise = $client->requestAsync(
+                    $monitor->uptime_check_method,
+                    $monitor->url,
+                    array_filter(array_merge([
+                        'connect_timeout' => config('uptime-monitor.uptime_check.timeout_per_site'),
+                        'headers'         => $this->promiseHeaders($monitor),
+                    ], json_decode($monitor->uptime_check_payload, true) ?? []))
+                );
 
-            yield $promise;
+                yield $promise;
+            }
         }
     }
 
