@@ -68,6 +68,6 @@ class CertificateCheckFailed extends BaseNotification
 
     public function getMessageText(): string
     {
-        return "SSL Certificate for {$this->getMonitor()->url} is invalid";
+        return "SSL Certificate for {$this->getMonitor()->name} is invalid";
     }
 }

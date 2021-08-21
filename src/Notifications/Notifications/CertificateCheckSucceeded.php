@@ -59,6 +59,6 @@ class CertificateCheckSucceeded extends BaseNotification
 
     public function getMessageText(): string
     {
-        return "SSL certificate for {$this->event->monitor->url} is valid";
+        return "SSL certificate for {$this->event->monitor->name} is valid";
     }
 }

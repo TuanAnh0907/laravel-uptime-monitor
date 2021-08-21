@@ -76,6 +76,6 @@ class UptimeCheckRecovered extends BaseNotification
 
     public function getMessageText(): string
     {
-        return "{$this->getMonitor()->url} has recovered after {$this->event->downtimePeriod->duration()}";
+        return "{$this->getMonitor()->name} has recovered after {$this->event->downtimePeriod->duration()}";
     }
 }
