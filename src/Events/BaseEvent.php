@@ -37,6 +37,14 @@ class BaseEvent implements ShouldQueue
     }
 
     /**
+     * @return Monitor
+     */
+    public function getMonitor(): Monitor
+    {
+        return $this->monitor;
+    }
+
+    /**
      * @return string
      */
     public function getWebhook(): string
