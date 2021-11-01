@@ -22,7 +22,7 @@
         "guzzlehttp/guzzle": "^7.0",
         "laravel/framework": "^8.7",
         "laravel/slack-notification-channel": "^2.0",
-        "spatie/ssl-certificate": "2.1.1",
+        "spatie/ssl-certificate": "1.22.1",
         "spatie/url": "^1.0.1"
     },
     "require-dev": {
