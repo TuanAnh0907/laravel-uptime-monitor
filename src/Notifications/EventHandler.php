@@ -76,7 +76,12 @@ class EventHandler
         $eventName = class_basename($event);
 
         $notificationClass = collect($this->config->get('uptime-monitor.notifications.notifications'))
-            ->filter(function (array $notificationChannels) {
+            ->filter(function (array $notificationChannels) use ($event) {
+                foreach ($notificationChannels as $key => $channel) {
+                    if (($channel === "mail" && !$event->getEmails()) || ($channel === "slack" && !$event->getSlackChannel())) {
+                        unset($notificationChannels[$key]);
+                    }
+                }
                 return count($notificationChannels);
             })
             ->keys()
