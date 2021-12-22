@@ -27,18 +27,6 @@ class EventHandler
     public function subscribe(Dispatcher $events)
     {
         $events->listen($this->allEventClasses(), function ($event) {
-            $notification = $this->determineNotification($event);
-
-            if (!$notification) {
-                return;
-            }
-
-            if ($notification->isStillRelevant()) {
-                $notifiable = $this->determineNotifiable($event->getEmails(), $event->getSlackChannel());
-
-                $notifiable->notify($notification);
-            }
-
             if (($monitor = $event->getMonitor())
                 && $monitor->uptime_check_enabled
                 && $webhook = $monitor->webhook) {
@@ -51,6 +39,18 @@ class EventHandler
                         ])
                     ]
                 ]);
+            }
+
+            $notification = $this->determineNotification($event);
+
+            if (!$notification) {
+                return;
+            }
+
+            if ($notification->isStillRelevant()) {
+                $notifiable = $this->determineNotifiable($event->getEmails(), $event->getSlackChannel());
+
+                $notifiable->notify($notification);
             }
         });
     }
