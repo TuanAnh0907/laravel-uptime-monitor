@@ -33,7 +33,7 @@ class EventHandler
                 (new Client($this->webhookHeaders($monitor)))->post($webhook, [
                     "form_params" => [
                         "monitor" => Arr::only($monitor->toArray(), [
-                            "url",
+                            "raw_url",
                             "uptime_status",
                             "uptime_last_check_date"
                         ])
