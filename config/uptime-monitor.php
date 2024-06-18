@@ -117,7 +117,12 @@ return [
         /**
          * ping times
          */
-        'ping_count'                                           => 1
+        'ping_count'                                           => 1,
+
+        /*
+         * Basic auth
+         * */
+        'basic_auth'                                           => config('app-key.auth')
     ],
 
     'certificate_check' => [

@@ -2,19 +2,15 @@
 
 namespace Spatie\UptimeMonitor;
 
-use Acamposm\Ping\Ping;
-use Acamposm\Ping\PingCommandBuilder;
 use Generator;
 use GrahamCampbell\GuzzleFactory\GuzzleFactory;
 use GuzzleHttp\Exception\TransferException;
 use GuzzleHttp\Promise\EachPromise;
-use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\TransferStats;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Psr\Http\Message\ResponseInterface;
 use Spatie\UptimeMonitor\Helpers\ConsoleOutput;
 use Spatie\UptimeMonitor\Models\Monitor;
-use Spatie\UptimeMonitor\Responses\PingResponse;
 
 class MonitorCollection extends Collection
 {
@@ -57,6 +53,7 @@ class MonitorCollection extends Collection
                     array_filter(array_merge([
                         'connect_timeout' => config('uptime-monitor.uptime_check.timeout_per_site'),
                         'headers'         => $this->promiseHeaders($monitor),
+                        'auth'            => $this->withBasicAuth($monitor),
                     ], json_decode($monitor->uptime_check_payload, true) ?? []))
                 );
 
@@ -72,6 +69,26 @@ class MonitorCollection extends Collection
             ->merge(config('uptime-monitor.uptime_check.additional_headers') ?? [])
             ->merge($monitor->uptime_check_additional_headers)
             ->toArray();
+    }
+
+    private function withBasicAuth(Monitor $monitor): array
+    {
+        $host = Arr::get(parse_url($monitor->url), 'host', '');
+
+        $configs  = config('uptime-monitor.uptime_check.basic_auth', []);
+        $_configs = array_filter($configs, static function (array $config) use ($host) {
+            $base_url = Arr::get($config, 'base_url');
+            return Arr::get(parse_url($base_url), 'host') == $host;
+        });
+
+        $config = Arr::first($_configs);
+        if ($config) {
+            return [
+                "{$config['client_id']}+{$config['public_key']}",
+                $config['private_key']
+            ];
+        }
+        return [];
     }
 
     /**
