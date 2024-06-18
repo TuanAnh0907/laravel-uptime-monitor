@@ -1,5 +1,5 @@
 {
-    "name": "nguyenhiep/laravel-uptime-monitor",
+    "name": "tuananhp/laravel-uptime-monitor",
     "description": "A powerful, easy to configure uptime monitor",
     "keywords": [
         "spatie",
@@ -9,9 +9,8 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Freek Van der Herten",
-            "email": "freek@spatie.be",
-            "homepage": "https://spatie.be",
+            "name": "TuanAnh0907",
+            "email": "tuananhtybg.99@gmail.com",
             "role": "Developer"
         }
     ],
